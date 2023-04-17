@@ -1,0 +1,117 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    <!-- vue script -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="https://unpkg.com/vue@latest"></script>
+    <script src="https://unpkg.com/@vuepic/vue-datepicker@latest"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@vuepic/vue-datepicker@latest/dist/main.css">
+
+    <title>App</title>
+</head>
+
+<body>
+    <div id="wrapper">
+        <nav class="navbar has-background-warning-light" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="https://www.google.co.th">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2792/2792918.png">
+                    <a class="navbar-item is-size-5">ActivityPlan</a>
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item">
+                        <a href="HomePage.html">Home</a>
+                    </a>
+
+                    <a class="navbar-item">
+                        <a href="AddTrip.html">CreateTrip</a>
+                    </a>
+                    <a class="navbar-item">
+                        <a href="EditTrip.html">UpdateTrip</a>
+                    </a>
+                    <a class="navbar-item">
+                        <a href="TripDetail.html">Detail</a>
+                    </a>
+                </div>
+
+                <div class="navbar-end">
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            More
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                                About
+                            </a>
+                            <a class="navbar-item">
+                                Jobs
+                            </a>
+                            <a class="navbar-item">
+                                Contact
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">
+                                Report an issue
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <router-view :key="$route.fullPath" />
+    </div>
+    <script>
+        const { createApp } = Vue
+        createApp({
+            name: "App",
+            components: { Datepicker: VueDatePicker },
+            data() {
+                return {
+                    showMenu: false
+                }
+            },
+            methods: {
+                toggleNavbar: function () {
+                    this.showMenu = !this.showMenu;
+                }
+            }
+        }).mount('#app')
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300&family=Prompt:wght@200;300;500&display=swap');
+
+        #app {
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-family: 'Prompt', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #2c3e50;
+        }
+
+        #wrapper {
+            width: auto;
+            height: 1000px;
+            background-color: rgb(183, 154, 131);
+            background-image: linear-gradient(rgb(254, 254, 236), rgb(218, 247, 248), rgb(220, 239, 202));
+
+        }
+    </style>
+</body>
+
+</html>

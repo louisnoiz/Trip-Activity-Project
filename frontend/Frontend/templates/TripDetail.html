@@ -1,0 +1,98 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+    <!-- vue script -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+
+    <title>TripDetail</title>
+</head>
+
+<body>
+    <!-- <img id="bg-cal-air" src="{{ url_for('static', filename='assets/bg_1.jpg') }}" alt="" /> -->
+    <div id="app" class="container is-widescreen">
+        <!-- <section class="hero">
+            <div class="hero-body">
+                <p class="title">
+                    Trip's Name
+                </p>
+
+            </div>
+
+        </section> -->
+        <section class="section">
+            <div class="content" v-for="(trip, index) in listTrips" :key="index">
+                <p class="title">
+                    {{ trip.name }}
+                </p>
+                <div class="columns">
+                    <div class="column">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="content">
+                                    <div class="field" v-for="(day, index) in trip.days" :key="index">
+                                        <label class="label">&emsp; Day : {{'{{ day.date }}'}}</label>
+                                        <div class="field" v-for="(activity, index) in day.activities" :key="index">
+                                            <label class="label">&emsp;&emsp; -{{'{{ activity.time }}'}} {{'{{ activity.name
+                                            }}'}}</label>
+                                            <label class="label"> </label>
+                                            <label class="label">&emsp;&emsp;&emsp; Note: {{'{{ activity.note }}'}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        const { createApp } = Vue
+        createApp({
+            name: "app",
+            data() {
+        return {
+            listTrips: [{
+                "name": "Taifhoon Trip",
+                "days": [
+                    {
+                        "date": "2023-04-15",
+                        "activities": [
+                            {
+                                "time": "10:00",
+                                "name": "play water",
+                                "note": "eiei"
+                            },
+                            {
+                                "time": "14:00",
+                                "name": "up mountain",
+                                "note": "eiki"
+                            }
+                        ]
+                    },
+                    {
+                        "date": "2023-04-16",
+                        "activities": [
+                            {
+                                "time": "09:00",
+                                "name": "Activity Name",
+                                "note": "Activity Note"
+                            }
+                        ]
+                    }
+                ]
+            }]
+        }
+    }
+        }).mount('#app')
+    </script>
+    
+</body>
+
+</html>

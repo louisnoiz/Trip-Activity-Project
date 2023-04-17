@@ -1,0 +1,10 @@
+version: '3.3'
+
+services:
+
+  frontend:
+    build: ./Frontend
+    image: 63070163/webfrontend:1.0
+    ports:
+      - "8080:8080"
+ 
