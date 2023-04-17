@@ -13,57 +13,84 @@
 </head>
 
 <body>
-    <div id="app" class="container is-widescreen">
-        <section class="hero">
-            <div class="hero-body">
-                <p class="title">
-                    Your Trip
-                </p>
+    <div id="wrapper">
+        <nav class="navbar has-background-warning-light" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2792/2792918.png">
+                    <a class="navbar-item is-size-5">ActivityPlan</a>
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
-            <div class="buttons is-right">
-                <button class="button is-info" @click="add()">Add Trip</button>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">
+                        Home
+                    </a>
+                </div>
             </div>
-        </section>
-        <section class="section">
-            <div class="content">
-                <div class="columns">
-                    <div class="column">
-                        <div class="card has-background-link-light mb-5" v-for="(trip, index) in tripList" :key="index">
-                            <div class="card-content">
-                                <p class="title">
-                                    {{'{{ trip.name }}'}}
-                                </p>
-                                <p class="subtitle">
-                                    This is trip have duration {{'{{ trip.days.length }}'}} day
-                                </p>
+        </nav>
+        <div id="app" class="container is-widescreen">
+            <section class="hero">
+                <div class="hero-body">
+                    <p class="title">
+                        Your Trip
+                    </p>
+                </div>
+                <div class="buttons is-right">
+                    <button class="button is-info" @click="add()">Add Trip</button>
+                </div>
+            </section>
+            <section class="section">
+                <div class="content">
+                    <div class="columns">
+                        <div class="column">
+                            <div class="card has-background-link-light mb-5" v-for="(trip, index) in tripList"
+                                :key="index">
+                                <div class="card-content">
+                                    <p class="title">
+                                        {{'{{ trip.name }}'}}
+                                    </p>
+                                    <p class="subtitle">
+                                        This is trip have duration {{'{{ trip.days.length }}'}} day
+                                    </p>
+                                </div>
+                                <footer class="card-footer">
+                                    <a class="card-footer-item" @click="detail(trip.name)">Detail</a>
+                                    <a class="card-footer-item" @click="edit(trip.name)">Edit</a>
+                                    <a class="card-footer-item " @click="del(trip.name)">Delete</a>
+                                </footer>
                             </div>
-                            <footer class="card-footer">
-                                <a class="card-footer-item" @click="detail(trip.name)">Detail</a>
-                                <a class="card-footer-item" @click="edit(trip.name)">Edit</a>
-                                <a class="card-footer-item" @click="del(trip.name)">Delete</a>
-                            </footer>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
-    <div class="modal" :class="{ 'is-active': showModal }">
-        <div class="modal-background"></div>
-        <div class="modal-card">
-            <header class="modal-card-head">
-                <p class="modal-card-title">Delete Trip</p>
-                <button class="delete" aria-label="close" @click="showModal = false"></button>
-            </header>
-            <section class="modal-card-body">
-                Are You Sure To Delete Trip: {{'{{ selectDel }}'}}
             </section>
-            <footer class="modal-card-foot">
-                <button class="button is-danger" @click="confirmDel()">Delete</button>
-                <button class="button" @click="showModal = false">Cancel</button>
-            </footer>
+        </div>
+        <div id="modal" class="modal" :class="{ 'is-active': showModal }">
+            <div class="modal-background"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Delete Trip</p>
+                    <button class="delete" aria-label="close" @click="showModal = false"></button>
+                </header>
+                <section class="modal-card-body">
+                    Are You Sure To Delete Trip: {{'{{ selectDel }}'}}
+                </section>
+                <footer class="modal-card-foot">
+                    <button class="button is-danger" @click="confirmDel()">Delete</button>
+                    <button class="button" @click="showModal = false">Cancel</button>
+                </footer>
+            </div>
         </div>
     </div>
+
     <script>
         const { createApp } = Vue
         createApp({
@@ -89,24 +116,26 @@
                     window.location.href = "/addtrip"
                 },
                 del(name) {
-                    this.showModal = true
-                    this.selectDel = name
+                    if (confirm("Are You Sure To Delete Trip: " + name)) {
+                        this.tripList = this.tripList.filter((trip) => {
+                            return trip.name != name
+                        })
+                        this.set()
+                    }
                 },
-                confirmDel() {
-                    this.tripList = this.tripList.filter((trip) => {
-                        return trip.name != this.selectDel
-                    })
-                    this.set()
-                    this.showModal = false
-                },
-                edit(name){
+                edit(name) {
                     window.location.href = "/updatetrip/" + name
                 },
-                detail(name){
+                detail(name) {
                     window.location.href = "/tripdetail/" + name
                 }
             }
-        }).mount('#app')
+        }).mount('#app');
+
+        // $(".modal-close").click(function () {
+        //     $("html").removeClass("is-clipped");
+        //     $(this).parent().removeClass("is-active");
+        // });
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300&family=Prompt:wght@200;300;500&display=swap');
@@ -117,6 +146,13 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             color: #2c3e50;
+        }
+
+        body {
+            background-color: rgb(183, 154, 131);
+            background-size: auto auto;
+            background-image: linear-gradient(rgb(254, 254, 236), rgb(218, 247, 248), rgb(220, 239, 202));
+            min-height: 100vh;
         }
     </style>
 </body>

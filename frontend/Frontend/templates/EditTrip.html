@@ -16,54 +16,80 @@
 </head>
 
 <body>
-    <div id="app" class="container is-widescreen">
-        <section class="hero">
-            <div class="hero-body">
-                <p class="title">Change your Trip Here!</p>
+    <div id="wrapper">
+        <nav class="navbar has-background-warning-light" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2792/2792918.png">
+                    <a class="navbar-item is-size-5">ActivityPlan</a>
+                </a>
+
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
-        </section>
-        <section class="px-6 mb-4">
-            <label class="title">Trip: {{'{{trip.name}}'}}</label>
-        </section>
-        <div class="columns">
-            <div class="column">
-                <section class="px-6">
-                    <div class="field" v-for="(day, index) in trip.days" :key="index">
-                        <label class="label">Day: {{'{{ dateformat(day.date) }}'}}</label>
-                        <Datepicker class="mb-3" disabledTime="true" v-model="day.date"></Datepicker>
-                        <div class="field ml-6" v-for="(activity, index) in day.activities" :key="index">
-                            <label class="label">Activity: {{'{{ activity.name }}'}}</label>
-                            <div class="control mt-3">
-                                <input class="input mb-3" v-model="activity.name" type="text"
-                                    placeholder="Activity's Name" />
+
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">
+                        Home
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div id="app" class="container is-widescreen">
+            <section class="hero">
+                <div class="hero-body">
+                    <p class="title">Change your Trip Here!</p>
+                </div>
+            </section>
+            <section class="px-6 mb-4">
+                <label class="title">Trip: {{'{{trip.name}}'}}</label>
+            </section>
+            <div class="columns">
+                <div class="column">
+                    <section class="px-6">
+                        <div class="field" v-for="(day, index) in trip.days" :key="index">
+                            <label class="label">Day: {{'{{ dateformat(day.date) }}'}}</label>
+                            <Datepicker class="mb-3" disabledTime="true" v-model="day.date"></Datepicker>
+                            <div class="field ml-6" v-for="(activity, index) in day.activities" :key="index">
+                                <label class="label">Activity: {{'{{ activity.name }}'}}</label>
+                                <div class="control mt-3">
+                                    <input class="input mb-3" v-model="activity.name" type="text"
+                                        placeholder="Activity's Name" />
+                                </div>
+                                <div class="control">
+                                    <Datepicker v-model="activity.time" time-picker disable-time-range-validation range
+                                        placeholder="Select Time" />
+                                </div>
+                                <div class="control mt-3">
+                                    <textarea class="textarea" v-model="activity.note" placeholder="Note"></textarea>
+                                </div>
                             </div>
-                            <div class="control">
-                                <Datepicker v-model="activity.time" time-picker disable-time-range-validation range
-                                    placeholder="Select Time" />
-                            </div>
-                            <div class="control mt-3">
-                                <textarea class="textarea" v-model="activity.note" placeholder="Note"></textarea>
+                            <div class="ml-6">
+                                <Button class="button" @click="addActivity(index)">Add Activity</Button>
                             </div>
                         </div>
-                        <div class="ml-6">
-                            <Button class="button" @click="addActivity(index)">Add Activity</Button>
+                    </section>
+                    <section class="px-6 mt-4">
+                        <Button class="button" @click="addDay()">Add day</Button>
+                    </section>
+                    <div class="field is-grouped mt-6 ml-6">
+                        <div class="control">
+                            <button class="button is-primary" @click="save()">Submit</button>
                         </div>
-                    </div>
-                </section>
-                <section class="px-6 mt-4">
-                    <Button class="button" @click="addDay()">Add day</Button>
-                </section>
-                <div class="field is-grouped mt-6 ml-6">
-                    <div class="control">
-                        <button class="button is-primary" @click="save()">Submit</button>
-                    </div>
-                    <div class="control">
-                        <button @click="back()" class="button is-warning is-light">Cancel</button>
+                        <div class="control">
+                            <button @click="back()" class="button is-warning is-light">Cancel</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <script>
         const { createApp } = Vue
         createApp({
@@ -92,7 +118,7 @@
                         }
                     })
                     localStorage.setItem("trip", JSON.stringify(this.tripList));
-                    this.$router.push({ path: "/" })
+                    window.location.href = "/"
                 },
                 addDay() {
                     this.trip.days.push({
@@ -129,6 +155,13 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             color: #2c3e50;
+        }
+
+        body {
+            background-color: rgb(183, 154, 131);
+            background-size: auto auto;
+            background-image: linear-gradient(rgb(254, 254, 236), rgb(218, 247, 248), rgb(220, 239, 202));
+            min-height: 100vh;
         }
     </style>
 </body>

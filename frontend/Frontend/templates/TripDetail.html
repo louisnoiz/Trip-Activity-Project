@@ -13,40 +13,65 @@
 </head>
 
 <body>
-    <!-- <img id="bg-cal-air" src="{{ url_for('static', filename='assets/bg_1.jpg') }}" alt="" /> -->
-    <div id="app" class="container is-widescreen">
-        <!-- <section class="hero">
-            <div class="hero-body">
-                <p class="title">
-                    Trip's Name
-                </p>
+    <div id="wrapper">
+        <nav class="navbar has-background-warning-light" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand">
+                <a class="navbar-item" href="/">
+                    <img src="https://cdn-icons-png.flaticon.com/512/2792/2792918.png">
+                    <a class="navbar-item is-size-5">ActivityPlan</a>
+                </a>
 
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                    data-target="navbarBasicExample">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
             </div>
 
-        </section> -->
-        <section class="section">
-            <div class="content">
-                <p class="title">
-                    Trip: {{name}}
-                </p>
-                <div class="columns">
-                    <div class="column">
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="content">
-                                    <div class="field" v-for="(day, index) in trip.days" :key="index">
-                                        <label class="label">&emsp; Day : {{'{{ dateformat(day.date) }}'}}</label>
-                                        <div class="field" v-for="(activity, index) in day.activities" :key="index">
-                                            <label class="label">&emsp;&emsp;&emsp;- Activity:{{' {{ activity.name
-                                                }}'}}</label>
-                                            <label class="label" v-if="activity.time">&emsp;&emsp;&emsp;&emsp;Time:
-                                                {{'{{
-                                                timeformat(activity.time[0]) }}'}} - {{'{{ timeformat(activity.time[1])
-                                                }}'}}
-                                            </label>
-                                            <label class="label"> </label>
-                                            <label class="label">&emsp;&emsp;&emsp;&emsp;Note: {{'{{ activity.note
-                                                }}'}}</label>
+            <div id="navbarBasicExample" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="/">
+                        Home
+                    </a>
+                </div>
+            </div>
+        </nav>
+        <div id="app" class="container is-widescreen">
+            <!-- <section class="hero">
+                <div class="hero-body">
+                    <p class="title">
+                        Trip's Name
+                    </p>
+    
+                </div>
+    
+            </section> -->
+            <section class="section">
+                <div class="content">
+                    <p class="title">
+                        Trip: {{name}}
+                    </p>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="card">
+                                <div class="card-content">
+                                    <div class="content">
+                                        <div class="field" v-for="(day, index) in trip.days" :key="index">
+                                            <label class="label">&emsp; Day : {{'{{ dateformat(day.date) }}'}}</label>
+                                            <div class="field" v-for="(activity, index) in day.activities" :key="index">
+                                                <label class="label">&emsp;&emsp;&emsp;- Activity:{{' {{ activity.name
+                                                    }}'}}</label>
+                                                <label class="label" v-if="activity.time">&emsp;&emsp;&emsp;&emsp;Time:
+                                                    {{'{{
+                                                    timeformat(activity.time[0]) }}'}} - {{'{{
+                                                    timeformat(activity.time[1])
+                                                    }}'}}
+                                                </label>
+                                                <label class="label"> </label>
+                                                <label class="label">&emsp;&emsp;&emsp;&emsp;Note: {{'{{ activity.note
+                                                    }}'}}</label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -54,13 +79,15 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="control">
-                <button @click="back()" class="button is-info">Back</button>
-            </div>
-        </section>
+                <div class="control">
+                    <button @click="back()" class="button is-info">Back</button>
+                </div>
+            </section>
 
+        </div>
     </div>
+    <!-- <img id="bg-cal-air" src="{{ url_for('static', filename='assets/bg_1.jpg') }}" alt="" /> -->
+
     <script>
         const { createApp } = Vue
         createApp({
@@ -110,6 +137,13 @@
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             color: #2c3e50;
+        }
+
+        body {
+            background-color: rgb(183, 154, 131);
+            background-size: auto auto;
+            background-image: linear-gradient(rgb(254, 254, 236), rgb(218, 247, 248), rgb(220, 239, 202));
+            min-height: 100vh;
         }
     </style>
 </body>
