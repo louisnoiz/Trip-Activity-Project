@@ -25,9 +25,9 @@
 
         </section> -->
         <section class="section">
-            <div class="content" v-for="(trip, index) in listTrips" :key="index">
+            <div class="content">
                 <p class="title">
-                    {{'{{ trip.name }}'}}
+                    Trip: {{name}}
                 </p>
                 <div class="columns">
                     <div class="column">
@@ -35,64 +35,83 @@
                             <div class="card-content">
                                 <div class="content">
                                     <div class="field" v-for="(day, index) in trip.days" :key="index">
-                                        <label class="label">&emsp; Day : {{'{{ day.date }}'}}</label>
+                                        <label class="label">&emsp; Day : {{'{{ dateformat(day.date) }}'}}</label>
                                         <div class="field" v-for="(activity, index) in day.activities" :key="index">
-                                            <label class="label">&emsp;&emsp; -{{'{{ activity.time }}'}} {{'{{ activity.name
-                                            }}'}}</label>
+                                            <label class="label">&emsp;&emsp;&emsp;- Activity:{{' {{ activity.name
+                                                }}'}}</label>
+                                            <label class="label" v-if="activity.time">&emsp;&emsp;&emsp;&emsp;Time:
+                                                {{'{{
+                                                timeformat(activity.time[0]) }}'}} - {{'{{ timeformat(activity.time[1])
+                                                }}'}}
+                                            </label>
                                             <label class="label"> </label>
-                                            <label class="label">&emsp;&emsp;&emsp; Note: {{'{{ activity.note }}'}}</label>
+                                            <label class="label">&emsp;&emsp;&emsp;&emsp;Note: {{'{{ activity.note
+                                                }}'}}</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
+            <div class="control">
+                <button @click="back()" class="button is-info">Back</button>
+            </div>
         </section>
+
     </div>
     <script>
         const { createApp } = Vue
         createApp({
             name: "app",
             data() {
-        return {
-            listTrips: [{
-                "name": "Taifhoon Trip",
-                "days": [
-                    {
-                        "date": "2023-04-15",
-                        "activities": [
-                            {
-                                "time": "10:00",
-                                "name": "play water",
-                                "note": "eiei"
-                            },
-                            {
-                                "time": "14:00",
-                                "name": "up mountain",
-                                "note": "eiki"
-                            }
-                        ]
-                    },
-                    {
-                        "date": "2023-04-16",
-                        "activities": [
-                            {
-                                "time": "09:00",
-                                "name": "Activity Name",
-                                "note": "Activity Note"
-                            }
-                        ]
+                return {
+                    trip: {}
+                }
+            },
+            mounted() {
+                const data = JSON.parse(localStorage.getItem("trip"))
+                const name = window.location.pathname.split('/').pop()
+                this.trip = data.filter((trip) => {
+                    return trip.name == name
+                })[0]
+                console.log(this.trip)
+            },
+            methods: {
+                dateformat(date) {
+                    var d = new Date(date)
+                    if (date) {
+                        return d.toDateString()
                     }
-                ]
-            }]
-        }
-    }
+                    return ""
+                },
+                timeformat(obj) {
+                    console.log(obj);
+                    const dateObj = new Date();
+                    dateObj.setHours(obj.hours);
+                    dateObj.setMinutes(obj.minutes);
+                    dateObj.setSeconds(obj.seconds);
+                    const formattedTime = dateObj.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
+                    return formattedTime;
+                },
+                back() {
+                    window.location.href = "/"
+                }
+            }
         }).mount('#app')
     </script>
-    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300&family=Prompt:wght@200;300;500&display=swap');
+
+        * {
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-family: 'Prompt', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #2c3e50;
+        }
+    </style>
 </body>
 
 </html>

@@ -19,17 +19,8 @@
                 <p class="title">
                     Your Trip
                 </p>
-                <div class="columns">
-                    <div class="column is-half">
-                        <input class="input" type="text" placeholder="Search Trip" />
-                    </div>
-                    <div class="column is-half">
-                        <button class="button">Search</button>
-                    </div>
-                </div>
             </div>
             <div class="buttons is-right">
-                <button class="button is-success" @click="test()">TEST</button>
                 <button class="button is-info" @click="add()">Add Trip</button>
             </div>
         </section>
@@ -37,18 +28,19 @@
             <div class="content">
                 <div class="columns">
                     <div class="column">
-                        <div class="card has-background-link-light mb-5" v-for="(trip, index) in listTrip" :key="index">
+                        <div class="card has-background-link-light mb-5" v-for="(trip, index) in tripList" :key="index">
                             <div class="card-content">
                                 <p class="title">
                                     {{'{{ trip.name }}'}}
                                 </p>
                                 <p class="subtitle">
-                                    This is trip have duration {{'{{ trip.day.length }}'}} day
+                                    This is trip have duration {{'{{ trip.days.length }}'}} day
                                 </p>
                             </div>
                             <footer class="card-footer">
-                                <a class="card-footer-item" @click="edit()">Edit</a>
-                                <a class="card-footer-item">Delete</a>
+                                <a class="card-footer-item" @click="detail(trip.name)">Detail</a>
+                                <a class="card-footer-item" @click="edit(trip.name)">Edit</a>
+                                <a class="card-footer-item" @click="del(trip.name)">Delete</a>
                             </footer>
                         </div>
                     </div>
@@ -56,55 +48,77 @@
             </div>
         </section>
     </div>
+    <div class="modal" :class="{ 'is-active': showModal }">
+        <div class="modal-background"></div>
+        <div class="modal-card">
+            <header class="modal-card-head">
+                <p class="modal-card-title">Delete Trip</p>
+                <button class="delete" aria-label="close" @click="showModal = false"></button>
+            </header>
+            <section class="modal-card-body">
+                Are You Sure To Delete Trip: {{'{{ selectDel }}'}}
+            </section>
+            <footer class="modal-card-foot">
+                <button class="button is-danger" @click="confirmDel()">Delete</button>
+                <button class="button" @click="showModal = false">Cancel</button>
+            </footer>
+        </div>
+    </div>
     <script>
         const { createApp } = Vue
         createApp({
             name: "app",
             data() {
                 return {
-                    listTrip: []
+                    showModal: false,
+                    selectDel: "",
+                    tripList: []
                 }
             },
             created() {
                 const data = JSON.parse(localStorage.getItem("trip"))
                 if (data) {
-                    this.listTrip = data
+                    this.tripList = data
                 }
-                window.addEventListener('beforeunload', this.handleBeforeUnload)
-            },
-            beforeUnmount() {
-                window.removeEventListener('beforeunload', this.handleBeforeUnload)
             },
             methods: {
-                handleBeforeUnload() {
-                    localStorage.setItem("trip", JSON.stringify(this.listTrip));
-                },
-                test() {
-                    this.listTrip.push({
-                        name: "New",
-                        day: [
-                            {
-                                id: 1,
-                                location: "123"
-                            }
-                        ]
-                    })
-                },
-                edit() {
-                    this.$router.push({ path: "/updatetrip" })
+                set() {
+                    localStorage.setItem("trip", JSON.stringify(this.tripList));
                 },
                 add() {
-                    this.$router.push({ path: "/addtrip" })
+                    window.location.href = "/addtrip"
                 },
-                delete() {
-                    this.listTrip.map(() => {
-
+                del(name) {
+                    this.showModal = true
+                    this.selectDel = name
+                },
+                confirmDel() {
+                    this.tripList = this.tripList.filter((trip) => {
+                        return trip.name != this.selectDel
                     })
+                    this.set()
+                    this.showModal = false
+                },
+                edit(name){
+                    window.location.href = "/updatetrip/" + name
+                },
+                detail(name){
+                    window.location.href = "/tripdetail/" + name
                 }
             }
         }).mount('#app')
     </script>
-    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300&family=Prompt:wght@200;300;500&display=swap');
+
+        * {
+            font-family: 'Noto Sans Thai', sans-serif;
+            font-family: 'Prompt', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            color: #2c3e50;
+        }
+    </style>
 </body>
 
 </html>
